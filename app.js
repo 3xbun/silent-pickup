@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const localtunnel = require("localtunnel");
 
 const PORT = 5000;
 const queues = require("./routes/Queues");
@@ -31,4 +32,12 @@ app.get("/admin", (req, res) => {
   res.render("admin");
 });
 
-app.listen(PORT, () => console.log(`App running on http://localhost:${PORT}`));
+app.listen(PORT, async () => {
+  const tunnel = await localtunnel({ port: PORT, subdomain: "md-queue" });
+
+  console.log(`App running on ${tunnel.url}`);
+
+  tunnel.on("close", () => {
+    console.log("App closed");
+  });
+});
