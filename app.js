@@ -14,8 +14,21 @@ app.set("view engine", "ejs");
 app.set("views", "./views");
 
 app.use("/api", queues);
+
 app.get("/", (req, res) => {
   res.render("index");
+});
+
+app.get("/pick-up", (req, res) => {
+  res.render("pickUp");
+});
+
+app.get("/queues", (req, res) => {
+  res.render("queues");
+});
+
+app.get("/admin", (req, res) => {
+  res.render("admin");
 });
 
 app.listen(PORT, () => console.log(`App running on http://localhost:${PORT}`));

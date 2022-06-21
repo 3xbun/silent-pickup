@@ -2,42 +2,30 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <%- include("./partials/head"); %>
 </head>
 
 <body>
-
-
-    <div id="app">{{ message }}
-        <p>{{data}}</p>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-3">Welcome to MD Queue!</h1>
+            <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente vero, aspernatur ipsa
+                numquam suscipit. </p>
+            <hr class="my-2">
+            <p>Quia animi nesciunt, tempore excepturi a,
+                similique nisi laboriosam debitis odit quod modi corrupti deserunt sequi iure, porro consequuntur illum
+                ipsam. Aperiam molestiae illum, natus maiores iusto aliquid dolores possimus nobis nisi illo quod error
+                veniam odio dignissimos deserunt voluptatum, inventore labore aliquam voluptas beatae alias vel, minus
+                facilis provident. Quam, praesentium ad? Alias eos exercitationem explicabo totam atque necessitatibus
+                voluptates earum labore, eum commodi adipisci.</p>
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" href="/queues" role="button">Queue</a>
+                <a class="btn btn-primary btn-lg" href="/pick-up" role="button">Pick Up</a>
+            </p>
+        </div>
     </div>
 
-
-    <script src="https://unpkg.com/vue@3"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script>
-        const { createApp, ref, watchEffect } = Vue
-
-        createApp({
-            setup() {
-                const message = ref("Test")
-                const data = ref([])
-
-                watchEffect(async () => {
-                    const res = await axios.get("http://localhost:5000/api")
-                    data.value = res.data
-                })
-
-                return {
-                    message,
-                    data
-                }
-            }
-        }).mount('#app')
-    </script>
+    <%- include("./partials/scripts"); %>
 </body>
 
 </html>

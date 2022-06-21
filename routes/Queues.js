@@ -17,7 +17,6 @@ router.get("/", (req, res) => {
 
 // Add queue
 router.post("/add/queue", (req, res) => {
-  //   console.log(res);
   const queue = {
     time: dayjs(),
     id: req.body.id,

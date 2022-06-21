@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("./partials/head"); %>
+        <style>
+            table {
+                font-size: 2em;
+            }
+
+            .fa-xmark {
+                color: grey;
+            }
+
+            a {
+                cursor: pointer;
+            }
+        </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1 class="text-center">MD Queue</h1>
+        <div class="container" v-if="admin">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="text-center">NO.</th>
+                            <th>Time</th>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(queue, index) in data" :key="queue.time">
+                            <td class="text-center">{{index+1}}</td>
+                            <td>{{formatTime(queue.time)}}</td>
+                            <td>{{queue.id}}</td>
+                            <td>{{queue.name}}</td>
+                            <td>
+                                <a @click="deleteQueue(queue.id)">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <%- include("./partials/scripts"); %>
+        <script>
+            const { createApp, ref, onMounted, computed } = Vue
+
+            createApp({
+                setup() {
+                    const data = ref([])
+                    const baseURL = 'http://localhost:5000'
+
+                    const getQueues = () => {
+                        setInterval(async () => {
+                            const res = await axios.get(`${baseURL}/api`)
+                            data.value = res.data
+                        }, 1000)
+                    };
+
+                    const deleteQueue = (id) => {
+                        axios.delete(`${baseURL}/api/delete/${id}`)
+                        getQueues()
+                    }
+
+                    const formatTime = (time) => dayjs(time).format('HH:mm:ss')
+
+                    onMounted(() => {
+                        getQueues()
+                    })
+
+                    // watchEffect(async () => {
+                    //     const res = await axios.get("http://localhost:5000/api")
+                    //     data.value = res.data
+                    // })
+
+                    return {
+                        data,
+                        formatTime,
+                        deleteQueue
+                    }
+                }
+            }).mount('#app')
+        </script>
+</body>
+
+</html>
