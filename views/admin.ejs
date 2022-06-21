@@ -21,7 +21,7 @@
 <body>
     <div id="app">
         <h1 class="text-center">MD Queue</h1>
-        <div class="container" v-if="admin">
+        <div class="container">
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -58,7 +58,7 @@
             createApp({
                 setup() {
                     const data = ref([])
-                    const baseURL = 'http://localhost:5000'
+                    const baseURL = 'https://md-queue.loca.lt'
 
                     const getQueues = () => {
                         setInterval(async () => {
