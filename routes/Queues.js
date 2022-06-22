@@ -4,11 +4,6 @@ const db = require("../database/db");
 
 const router = express.Router();
 
-// router.get("/", (req, res) => res.send("Hello lowdb!"));
-// router.post("/add", (req, res) => res.send("post ok"));
-// router.put("/update/:id", (req, res) => res.send("put ok"));
-// router.delete("/delete/:id", (req, res) => res.send("delete ok"));
-
 // Get queues
 router.get("/", (req, res) => {
   const queues = db.get("queues").value();
@@ -19,7 +14,7 @@ router.get("/", (req, res) => {
 router.post("/add/queue", (req, res) => {
   const queue = {
     time: dayjs(),
-    id: req.body.id,
+    id: String(req.body.id),
     name: req.body.name,
   };
 
