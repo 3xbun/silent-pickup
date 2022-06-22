@@ -20,18 +20,14 @@
         <div class="container">
             <h1>Pickup</h1>
             <form @submit.prevent="addQueue(queue)">
-                <div class="form-group">
-                    <label for="formGroupExampleInput">Student ID</label>
-                    <input v-model="queue.id" type="text" class="form-control" id="studentID"
-                        placeholder="Enter Student ID">
+                <div class="form-floating mb-3">
+                    <input v-model="queue.id" type="number" class="form-control" id="floatingInput"
+                        placeholder="Student ID">
+                    <label for="floatingInput">Student ID</label>
                 </div>
                 <div class="form-group">
-                    <label for="formGroupExampleInput2">Name</label>
-                    <input v-model="queue.name" type="text" class="form-control" id="name"
-                        placeholder="Enter Student's Name">
+                    <button type="submit" class="btn btn-primary mb-2">Search</button>
                 </div>
-
-                <button type="submit" class="btn btn-primary mb-2">Submit</button>
             </form>
 
             <div v-if="showModal" class="alert alert-success" role="alert">
@@ -59,7 +55,6 @@
                         name: ''
                     })
                     const alertText = ""
-                    const baseURL = 'https://md-queue.loca.lt'
                     const showModal = ref(false)
 
                     const addQueue = (queue) => {
