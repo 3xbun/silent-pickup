@@ -19,16 +19,46 @@
     <div id="app">
         <div class="container">
             <h1>Pickup</h1>
-            <form @submit.prevent="addQueue(queue)">
+            <form @submit.prevent="search(stdID)">
                 <div class="form-floating mb-3">
-                    <input v-model="queue.id" type="number" class="form-control" id="floatingInput"
-                        placeholder="Student ID">
+                    <input v-model="stdID" type="text" class="form-control" id="floatingInput" placeholder="Student ID">
                     <label for="floatingInput">Student ID</label>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary mb-2">Search</button>
                 </div>
             </form>
+
+
+            <div v-if="queue" class="card">
+                <div class="card-header">
+                    Reservation
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Reservation for {{searchStudent.id}} {{searchStudent.name}}
+                        {{searchStudent.class}}</h5>
+                    <p class="card-text">Lorem ipsum dolor sit amet.</p>
+                    <a @click="deleteQueue(searchStudent.id)" href="#" class="btn btn-outline-success">Finish</a>
+                </div>
+                <div class="card-footer text-muted">
+                    Reserved: {{timeFromNow}}
+                </div>
+            </div>
+
+            <div v-else>
+
+                <div v-if="searchStudent.id" class="card">
+                    <div class="card-body">
+                        <strong class="card-title text-muted">{{searchStudent.id}} | </strong>
+                        <span class="card-text">{{searchStudent.name}} | {{searchStudent.class}}</span>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <button @click="addQueue(searchStudent)" href="#" class="btn btn-primary">Reserve</button>
+                    </div>
+                </div>
+
+            </div>
+
 
             <div v-if="showModal" class="alert alert-success" role="alert">
                 <span>
@@ -46,35 +76,65 @@
 
     <%- include("./partials/scripts"); %>
         <script>
-            const { createApp, ref } = Vue
+            dayjs.extend(dayjs_plugin_relativeTime)
+            const { createApp, ref, computed } = Vue
 
             createApp({
                 setup() {
-                    const queue = ref({
-                        id: '',
-                        name: ''
-                    })
+                    const searchStudent = ref({})
+                    const stdID = ref("")
                     const alertText = ""
                     const showModal = ref(false)
+                    const queue = ref("")
+                    const timeFromNow = ref("")
 
-                    const addQueue = (queue) => {
-                        axios.post(`${baseURL}/api/add/queue`, queue)
-                        showModal.value = true
+                    const search = async (id) => {
+                        searchStudent.value = {}
+                        const res = await axios.get("http://my-json-server.typicode.com/3xbun/silent-pickup/Students/" + id)
+                        searchStudent.value = res.data
+
+                        getQueue(id)
+                        setInterval(() => {
+                            timeFormat()
+                        }, 1000);
+                    }
+
+                    const getQueue = async (id) => {
+                        const res = await axios.get(`${baseURL}/api/${id}`)
+                        queue.value = res.data
+                    }
+
+                    const addQueue = (std) => {
+                        axios.post(`${baseURL}/api/add/queue`, std)
+                        getQueue(std.id)
+                    }
+
+                    const deleteQueue = (id) => {
+                        axios.delete(`${baseURL}/api/delete/${id}`)
+                        getQueue(id)
                     }
 
                     const reset = () => {
                         showModal.value = false
-                        queue.value = {
-                            id: '',
-                            name: ''
+                        stdID.value = ""
+                    }
+
+                    const timeFormat = () => {
+                        if (queue.value.time) {
+                            timeFromNow.value = dayjs(queue.value.time).fromNow();
                         }
                     }
 
                     return {
-                        queue,
+                        stdID,
                         showModal,
+                        searchStudent,
+                        queue,
+                        search,
+                        reset,
                         addQueue,
-                        reset
+                        deleteQueue,
+                        timeFromNow
                     }
                 }
             }).mount('#app')
