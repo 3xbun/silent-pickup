@@ -10,6 +10,14 @@ router.get("/", (req, res) => {
   res.json(queues);
 });
 
+// Get queue by ID
+router.get("/:id", (req, res) => {
+  const id = req.params.id;
+  const queue = db.get("queues").find({ id: id }).value();
+
+  res.json(queue);
+});
+
 // Add queue
 router.post("/add/queue", (req, res) => {
   const queue = {
