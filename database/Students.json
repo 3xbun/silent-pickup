@@ -1,0 +1,24 @@
+{
+  "Students": [
+    {
+      "id": "00001",
+      "name": "Phitchaya Tansoongnen"
+    },
+    {
+      "id": "00002",
+      "name": "Chompoo Sripituksakul"
+    },
+    {
+      "id": "00003",
+      "name": "Saowakhon Chiwpreecha"
+    },
+    {
+      "id": "00004",
+      "name": "Intira Kwaigno"
+    },
+    {
+      "id": "00005",
+      "name": "Patsaporn Phrompan"
+    }
+  ]
+}
