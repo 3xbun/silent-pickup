@@ -109,6 +109,7 @@
                     const getQueue = async (id) => {
                         const res = await axios.get(`${baseURL}/api/${id}`)
                         queue.value = res.data
+                        timeFormat()
                     }
 
                     const addQueue = (std) => {
