@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const localtunnel = require("localtunnel");
 
-const PORT = 5500;
+const PORT = process.env.PORT || 5500;
 
 const app = express();
 const db = require("./database/db");
@@ -22,7 +22,10 @@ app.use("/", index);
 
 app.listen(PORT, async () => {
   const tunnel = await localtunnel({ port: PORT, subdomain: "md-queue" });
-  const Students = await localtunnel({ port: 3000, subdomain: "md-queue-db" });
+  const Students = await localtunnel({
+    port: PORT + 500,
+    subdomain: "md-queue-db",
+  });
 
   console.log(`App running on http://localhost:${PORT}`);
   console.log(`App running on ${tunnel.url}`);
