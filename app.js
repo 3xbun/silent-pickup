@@ -22,9 +22,11 @@ app.use("/", index);
 
 app.listen(PORT, async () => {
   const tunnel = await localtunnel({ port: PORT, subdomain: "md-queue" });
+  const Students = await localtunnel({ port: 3000, subdomain: "md-queue-db" });
 
   console.log(`App running on http://localhost:${PORT}`);
   console.log(`App running on ${tunnel.url}`);
+  console.log(`Database on ${Students.url}`);
 
   tunnel.on("close", () => {
     console.log("App closed");
