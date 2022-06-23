@@ -90,7 +90,7 @@
 
                     const search = async (id) => {
                         searchStudent.value = {}
-                        const res = await axios.get("https://my-json-server.typicode.com/3xbun/silent-pickup/Students/" + id)
+                        const res = await axios.get(`${dbURL}/Students/${id}`)
                         searchStudent.value = res.data
 
                         getQueue(id)
