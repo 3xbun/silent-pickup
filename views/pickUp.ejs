@@ -29,6 +29,9 @@
                 </div>
             </form>
 
+            <div v-if="errMsg" class="alert alert-danger" role="alert">
+                {{errMsg}}
+            </div>
 
             <div v-if="queue" class="card">
                 <div class="card-header">
@@ -87,16 +90,20 @@
                     const showModal = ref(false)
                     const queue = ref("")
                     const timeFromNow = ref("")
+                    const errMsg = ref("")
 
                     const search = async (id) => {
+                        reset()
                         searchStudent.value = {}
-                        const res = await axios.get(`${baseURL}/db/Students/${id}`)
-                        searchStudent.value = res.data
+                        try {
+                            const res = await axios.get(`${baseURL}/db/Students/${id}`)
+                            searchStudent.value = res.data
+                        } catch (err) {
+                            errMsg.value = err.message
+                            console.log(err)
+                        }
 
                         getQueue(id)
-                        setInterval(() => {
-                            timeFormat()
-                        }, 1000);
                     }
 
                     const getQueue = async (id) => {
@@ -117,11 +124,16 @@
                     const reset = () => {
                         showModal.value = false
                         stdID.value = ""
+                        errMsg.value = ""
                     }
 
                     const timeFormat = () => {
                         if (queue.value.time) {
                             timeFromNow.value = dayjs(queue.value.time).fromNow();
+
+                            setInterval(() => {
+                                timeFormat()
+                            }, 1000);
                         }
                     }
 
@@ -130,11 +142,12 @@
                         showModal,
                         searchStudent,
                         queue,
+                        timeFromNow,
+                        errMsg,
                         search,
                         reset,
                         addQueue,
-                        deleteQueue,
-                        timeFromNow
+                        deleteQueue
                     }
                 }
             }).mount('#app')
