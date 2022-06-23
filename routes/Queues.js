@@ -1,6 +1,6 @@
 const express = require("express");
 const dayjs = require("dayjs");
-const db = require("../database/db");
+const { db } = require("../database/db");
 
 const router = express.Router();
 

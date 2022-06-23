@@ -90,7 +90,7 @@
 
                     const search = async (id) => {
                         searchStudent.value = {}
-                        const res = await axios.get(`${dbURL}/Students/${id}`)
+                        const res = await axios.get(`${baseURL}/db/Students/${id}`)
                         searchStudent.value = res.data
 
                         getQueue(id)
