@@ -30,6 +30,8 @@
                             <th>Time</th>
                             <th>Student ID</th>
                             <th>Name</th>
+                            <th>Class</th>
+                            <th>BY</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,6 +40,8 @@
                             <td>{{formatTime(queue.time)}}</td>
                             <td>{{queue.id}}</td>
                             <td>{{queue.name}}</td>
+                            <td>{{queue.class}}</td>
+                            <td style="font-family: FontAwesome;">{{formatPickup[queue.pickupType]}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -58,8 +62,14 @@
                         setInterval(async () => {
                             const res = await axios.get(`${baseURL}/api`)
                             data.value = res.data
+                            console.log(res.data)
                         }, 1000)
                     };
+
+                    const formatPickup = ref({
+                        'walk': "",
+                        'car': ""
+                    })
 
                     const deleteQueue = (id) => {
                         axios.delete(`${baseURL}/api/delete/${id}`)
@@ -73,6 +83,7 @@
 
                     return {
                         data,
+                        formatPickup,
                         formatTime,
                         deleteQueue
                     }
