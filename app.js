@@ -1,6 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const localtunnel = require("localtunnel");
 
 const PORT = process.env.PORT || 5500;
 
@@ -30,12 +29,4 @@ app.use("/", index);
 
 app.listen(PORT, async () => {
   console.log(`App running on http://localhost:${PORT}`);
-
-  const tunnel = await localtunnel({ port: PORT, subdomain: "md-queue" });
-
-  console.log(`App running on ${tunnel.url}`);
-
-  tunnel.on("close", () => {
-    console.log("App closed");
-  });
 });
