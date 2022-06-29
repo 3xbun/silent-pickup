@@ -12,6 +12,18 @@
             .close {
                 cursor: pointer;
             }
+
+            select,
+            option {
+                font-family: 'FontAwesome';
+            }
+
+            select {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                padding: 1em;
+            }
         </style>
 </head>
 
@@ -55,8 +67,14 @@
                         <strong class="card-title text-muted">{{searchStudent.id}} | </strong>
                         <span class="card-text">{{searchStudent.name}} | {{searchStudent.class}}</span>
                     </div>
-                    <div class="card-footer text-muted">
+                    <div class="card-footer text-muted d-flex">
                         <button @click="addQueue(searchStudent)" href="#" class="btn btn-primary">Reserve</button>
+
+                        <select v-model="pickupType" class="form-select ms-2" style="width: 6%;"
+                            aria-label="Default select">
+                            <option selected value="walk">&#xf554;</option>
+                            <option value="car">&#xf5e4;</option>
+                        </select>
                     </div>
                 </div>
 
@@ -91,10 +109,12 @@
                     const queue = ref("")
                     const timeFromNow = ref("")
                     const errMsg = ref("")
+                    const pickupType = ref('walk')
 
                     const search = async (id) => {
                         reset()
-                        searchStudent.value = {}
+
+
                         try {
                             const res = await axios.get(`${baseURL}/db/Students/${id}`)
                             searchStudent.value = res.data
@@ -113,6 +133,8 @@
                     }
 
                     const addQueue = (std) => {
+                        std.pickupType = pickupType.value
+                        console.log(std)
                         axios.post(`${baseURL}/api/add/queue`, std)
                         getQueue(std.id)
                     }
@@ -126,6 +148,7 @@
                         showModal.value = false
                         stdID.value = ""
                         errMsg.value = ""
+                        searchStudent.value = {}
                     }
 
                     const timeFormat = () => {
@@ -144,6 +167,7 @@
                         searchStudent,
                         queue,
                         timeFromNow,
+                        pickupType,
                         errMsg,
                         search,
                         reset,
