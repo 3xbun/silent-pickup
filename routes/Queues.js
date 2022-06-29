@@ -24,6 +24,8 @@ router.post("/add/queue", (req, res) => {
     time: dayjs(),
     id: String(req.body.id),
     name: req.body.name,
+    class: req.body.class,
+    pickupType: req.body.pickupType,
   };
 
   db.get("queues").push(queue).last().write();
