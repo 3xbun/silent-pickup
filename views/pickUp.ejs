@@ -17,13 +17,6 @@
             option {
                 font-family: 'FontAwesome';
             }
-
-            select {
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none;
-                padding: 1em;
-            }
         </style>
 </head>
 
@@ -67,11 +60,12 @@
                         <strong class="card-title text-muted">{{searchStudent.id}} | </strong>
                         <span class="card-text">{{searchStudent.name}} | {{searchStudent.class}}</span>
                     </div>
+
                     <div class="card-footer text-muted d-flex">
                         <button @click="addQueue(searchStudent)" href="#" class="btn btn-primary">Reserve</button>
 
-                        <select v-model="pickupType" class="form-select ms-2" style="width: 6%;"
-                            aria-label="Default select">
+                        <select v-model="pickupType" class="form-select ms-2" style="width: 10%;"
+                            aria-label=" Default select">
                             <option selected value="walk">&#xf554;</option>
                             <option value="car">&#xf5e4;</option>
                         </select>
