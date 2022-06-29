@@ -12,11 +12,6 @@
             .close {
                 cursor: pointer;
             }
-
-            select,
-            option {
-                font-family: 'FontAwesome';
-            }
         </style>
 </head>
 
@@ -45,7 +40,6 @@
                 <div class="card-body">
                     <h5 class="card-title">Reservation for {{searchStudent.id}} {{searchStudent.name}}
                         {{searchStudent.class}}</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet.</p>
                     <a @click="deleteQueue(searchStudent.id)" href="#" class="btn btn-outline-success">Finish</a>
                 </div>
                 <div class="card-footer text-muted">
@@ -64,10 +58,9 @@
                     <div class="card-footer text-muted d-flex">
                         <button @click="addQueue(searchStudent)" href="#" class="btn btn-primary">Reserve</button>
 
-                        <select v-model="pickupType" class="form-select ms-2" style="width: 10%;"
-                            aria-label=" Default select">
-                            <option selected value="walk">&#xf554;</option>
-                            <option value="car">&#xf5e4;</option>
+                        <select v-model="pickupType" class="form-select ms-2 w-25">
+                            <option selected value="walk">Walk</option>
+                            <option value="car">Car</option>
                         </select>
                     </div>
                 </div>
@@ -108,16 +101,22 @@
                     const search = async (id) => {
                         reset()
 
+                        if (id) {
 
-                        try {
-                            const res = await axios.get(`${baseURL}/db/Students/${id}`)
-                            searchStudent.value = res.data
-                        } catch (err) {
-                            errMsg.value = err.message
-                            console.log(err)
+
+                            try {
+                                const res = await axios.get(`${baseURL}/db/Students/${id}`)
+                                searchStudent.value = res.data
+                            } catch (err) {
+                                errMsg.value = err.message
+                                console.log(err)
+                            }
+
+                            getQueue(id)
+                        } else {
+                            errMsg.value = 'Please enter student ID'
                         }
 
-                        getQueue(id)
                     }
 
                     const getQueue = async (id) => {
