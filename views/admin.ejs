@@ -50,41 +50,42 @@
         </div>
     </div>
 
+    <%- include("./partials/footer"); %>
 
-    <%- include("./partials/scripts"); %>
-        <script>
-            const { createApp, ref, onMounted, computed } = Vue
+        <%- include("./partials/scripts"); %>
+            <script>
+                const { createApp, ref, onMounted, computed } = Vue
 
-            createApp({
-                setup() {
-                    const data = ref([])
+                createApp({
+                    setup() {
+                        const data = ref([])
 
-                    const getQueues = () => {
-                        setInterval(async () => {
-                            const res = await axios.get(`${baseURL}/api`)
-                            data.value = res.data
-                        }, 1000)
-                    };
+                        const getQueues = () => {
+                            setInterval(async () => {
+                                const res = await axios.get(`${baseURL}/api`)
+                                data.value = res.data
+                            }, 1000)
+                        };
 
-                    const deleteQueue = (id) => {
-                        axios.delete(`${baseURL}/api/delete/${id}`)
-                        getQueues()
+                        const deleteQueue = (id) => {
+                            axios.delete(`${baseURL}/api/delete/${id}`)
+                            getQueues()
+                        }
+
+                        const formatTime = (time) => dayjs(time).format('HH:mm:ss')
+
+                        onMounted(() => {
+                            getQueues()
+                        })
+
+                        return {
+                            data,
+                            formatTime,
+                            deleteQueue
+                        }
                     }
-
-                    const formatTime = (time) => dayjs(time).format('HH:mm:ss')
-
-                    onMounted(() => {
-                        getQueues()
-                    })
-
-                    return {
-                        data,
-                        formatTime,
-                        deleteQueue
-                    }
-                }
-            }).mount('#app')
-        </script>
+                }).mount('#app')
+            </script>
 </body>
 
 </html>

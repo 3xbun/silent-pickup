@@ -76,100 +76,100 @@
                     <i class="fa-solid fa-xmark"></i>
                 </div>
             </div>
-
-
         </div>
     </div>
 
+    <%- include("./partials/footer"); %>
 
-    <%- include("./partials/scripts"); %>
-        <script>
-            dayjs.extend(dayjs_plugin_relativeTime)
-            const { createApp, ref, computed } = Vue
+        <%- include("./partials/scripts"); %>
 
-            createApp({
-                setup() {
-                    const searchStudent = ref({})
-                    const stdID = ref("")
-                    const alertText = ""
-                    const showModal = ref(false)
-                    const queue = ref("")
-                    const timeFromNow = ref("")
-                    const errMsg = ref("")
-                    const pickupType = ref('walk')
+            <script>
+                dayjs.extend(dayjs_plugin_relativeTime)
+                const { createApp, ref, computed } = Vue
 
-                    const search = async (id) => {
-                        reset()
+                createApp({
+                    setup() {
+                        const searchStudent = ref({})
+                        const stdID = ref("")
+                        const alertText = ""
+                        const showModal = ref(false)
+                        const queue = ref("")
+                        const timeFromNow = ref("")
+                        const errMsg = ref("")
+                        const pickupType = ref('walk')
 
-                        if (id) {
+                        const search = async (id) => {
+                            reset()
+
+                            if (id) {
 
 
-                            try {
-                                const res = await axios.get(`${baseURL}/db/Students/${id}`)
-                                searchStudent.value = res.data
-                            } catch (err) {
-                                errMsg.value = err.message
-                                console.log(err)
+                                try {
+                                    const res = await axios.get(`${baseURL}/db/Students/${id}`)
+                                    searchStudent.value = res.data
+                                } catch (err) {
+                                    errMsg.value = err.message
+                                    console.log(err)
+                                }
+
+                                getQueue(id)
+                            } else {
+                                errMsg.value = 'Please enter student ID'
                             }
 
+                        }
+
+                        const getQueue = async (id) => {
+                            const res = await axios.get(`${baseURL}/api/${id}`)
+                            queue.value = res.data
+                            timeFormat()
+                        }
+
+                        const addQueue = (std) => {
+                            std.pickupType = pickupType.value
+                            console.log(std)
+                            axios.post(`${baseURL}/api/add/queue`, std)
+                            getQueue(std.id)
+                        }
+
+                        const deleteQueue = (id) => {
+                            axios.delete(`${baseURL}/api/delete/${id}`)
                             getQueue(id)
-                        } else {
-                            errMsg.value = 'Please enter student ID'
                         }
 
-                    }
+                        const reset = () => {
+                            showModal.value = false
+                            stdID.value = ""
+                            errMsg.value = ""
+                            searchStudent.value = {}
+                        }
 
-                    const getQueue = async (id) => {
-                        const res = await axios.get(`${baseURL}/api/${id}`)
-                        queue.value = res.data
-                        timeFormat()
-                    }
+                        const timeFormat = () => {
+                            if (queue.value.time) {
+                                timeFromNow.value = dayjs(queue.value.time).fromNow();
 
-                    const addQueue = (std) => {
-                        std.pickupType = pickupType.value
-                        console.log(std)
-                        axios.post(`${baseURL}/api/add/queue`, std)
-                        getQueue(std.id)
-                    }
+                                setInterval(() => {
+                                    timeFormat()
+                                }, 1000);
+                            }
+                        }
 
-                    const deleteQueue = (id) => {
-                        axios.delete(`${baseURL}/api/delete/${id}`)
-                        getQueue(id)
-                    }
-
-                    const reset = () => {
-                        showModal.value = false
-                        stdID.value = ""
-                        errMsg.value = ""
-                        searchStudent.value = {}
-                    }
-
-                    const timeFormat = () => {
-                        if (queue.value.time) {
-                            timeFromNow.value = dayjs(queue.value.time).fromNow();
-
-                            setInterval(() => {
-                                timeFormat()
-                            }, 1000);
+                        return {
+                            stdID,
+                            showModal,
+                            searchStudent,
+                            queue,
+                            timeFromNow,
+                            pickupType,
+                            errMsg,
+                            search,
+                            reset,
+                            addQueue,
+                            deleteQueue
                         }
                     }
-
-                    return {
-                        stdID,
-                        showModal,
-                        searchStudent,
-                        queue,
-                        timeFromNow,
-                        pickupType,
-                        errMsg,
-                        search,
-                        reset,
-                        addQueue,
-                        deleteQueue
-                    }
-                }
-            }).mount('#app')
-        </script>
+                }).mount('#app')
+            </script>
 </body>
 
 </html>
