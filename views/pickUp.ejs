@@ -145,8 +145,8 @@
                         }
 
                         const timeFormat = () => {
-                            if (queue.value.time) {
-                                timeFromNow.value = dayjs(queue.value.time).fromNow();
+                            if (queue.value.datetime) {
+                                timeFromNow.value = dayjs(queue.value.datetime).fromNow();
 
                                 setInterval(() => {
                                     timeFormat()
