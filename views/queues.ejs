@@ -35,9 +35,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(queue, index) in data" :key="queue.time">
+                        <tr v-for="(queue, index) in data" :key="queue._id">
                             <td class="text-center">{{index+1}}</td>
-                            <td>{{formatTime(queue.time)}}</td>
+                            <td>{{formatTime(queue.datetime)}}</td>
                             <td>{{queue.id}}</td>
                             <td>{{queue.name}}</td>
                             <td>{{queue.class}}</td>
