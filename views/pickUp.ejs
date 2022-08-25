@@ -12,52 +12,115 @@
             .close {
                 cursor: pointer;
             }
+
+            form {
+                display: flex;
+                gap: 1em;
+                margin: 1em 0;
+            }
+
+            form input {
+                border-radius: 1em;
+                padding: 1em .5em;
+                border: 1px solid grey;
+                width: 100%;
+            }
+
+            .alert {
+                margin-top: 1em;
+                padding: .5em 1em;
+                color: #ff4858;
+                background-color: #ffe0e3;
+                width: fit-content;
+                border-radius: 1em;
+                display: flex;
+                align-items: center;
+            }
+
+            .alert span {
+                margin-left: .2em;
+            }
+
+            .card {
+                width: 80%;
+                border: 1px solid grey;
+                border-radius: 1em;
+                padding: 1em;
+                display: flex;
+                justify-content: space-between;
+                gap: 1em;
+            }
+
+            .information {
+                margin-right: 1em;
+                display: flex;
+                align-items: center;
+            }
+
+            .action {
+                display: flex;
+                gap: .5em;
+            }
+
+            select {
+                border: 1px solid grey;
+                padding: .5em 1em;
+                border-radius: 1em;
+            }
+
+            .reserve {
+                flex-direction: column;
+                gap: 1em;
+            }
+
+            .reserve button.btn {
+                width: fit-content;
+                border: 1px solid green;
+                background-color: white;
+                color: green;
+            }
+
+
+            @media only screen and (max-width: 600px) {
+                .card {
+                    width: 100%;
+                    flex-direction: column;
+                }
+            }
         </style>
 </head>
 
 <body>
     <div id="app">
         <div class="container">
-            <h1>Pickup</h1>
+            <h1>PICKUP</h1>
             <form @submit.prevent="search(stdID)">
-                <div class="form-floating mb-3">
-                    <input v-model="stdID" type="text" class="form-control" id="floatingInput" placeholder="Student ID">
-                    <label for="floatingInput">Student ID</label>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary mb-2">Search</button>
-                </div>
+                <input v-model="stdID" type="text" class="form-control" placeholder="Enter Student ID">
+                <button type="submit" class="btn">Search</button>
             </form>
 
-            <div v-if="errMsg" class="alert alert-danger" role="alert">
-                {{errMsg}}
+            <div v-if="errMsg" class="alert">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>{{errMsg}}</span>
             </div>
 
-            <div v-if="queue" class="card">
-                <div class="card-header">
-                    Reservation
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Reservation for {{searchStudent.id}} {{searchStudent.name}}
-                        {{searchStudent.class}}</h5>
-                    <a @click="deleteQueue(searchStudent.id)" href="#" class="btn btn-outline-success">Finish</a>
-                </div>
+            <div v-if="queue" class="card reserve">
+                <p>Reservation for {{searchStudent.id}} {{searchStudent.name}} {{searchStudent.class}}</p>
+                <button @click="deleteQueue(searchStudent.id)" class="btn">Finish</button>
+                <hr>
                 <div class="card-footer text-muted">
                     Reserved: {{timeFromNow}}
                 </div>
             </div>
 
             <div v-else>
-
                 <div v-if="searchStudent.id" class="card">
-                    <div class="card-body">
-                        <strong class="card-title text-muted">{{searchStudent.id}} | </strong>
-                        <span class="card-text">{{searchStudent.name}} | {{searchStudent.class}}</span>
+                    <div class="information">
+                        <p>{{searchStudent.id}} | <strong>{{searchStudent.name}}</strong> | {{searchStudent.class}}</p>
                     </div>
 
-                    <div class="card-footer text-muted d-flex">
+                    <div class="action">
                         <button @click="addQueue(searchStudent)" href="#" class="btn btn-primary">Reserve</button>
-
                         <select v-model="pickupType" class="form-select ms-2 w-25">
                             <option selected value="walk">Walk</option>
                             <option value="car">Car</option>
