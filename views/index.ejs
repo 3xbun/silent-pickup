@@ -7,13 +7,18 @@
 
 <body>
     <div class="container">
-        <div class="jumbotron">
-            <h1 class="display-3">Welcome to MD Queue!</h1>
-            <p class="lead">
-                <a class="btn btn-primary btn-lg" href="/queues" role="button">Queue</a>
-                <a class="btn btn-primary btn-lg" href="/pick-up" role="button">Pick Up</a>
-            </p>
-        </div>
+        <header>
+            <div class="icon">
+                <i class="fa-solid fa-users logo"></i>
+            </div>
+            <h1>WELCOME TO MD QUEUE!</h1>
+            <nav>
+                <ul>
+                    <li><a class="btn" href="/queues">Queues</a></li>
+                    <li><a class="btn" href="/pick-up">Pick Up</a></li>
+                </ul>
+            </nav>
+        </header>
     </div>
 
     <%- include("./partials/footer"); %>
