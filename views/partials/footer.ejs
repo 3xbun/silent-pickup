@@ -1,13 +1,16 @@
 <style>
     footer {
         padding: 1em;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        position: fixed;
+        bottom: 0;
+        width: 100vw;
     }
 
-    footer p {
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+    div {
+        width: 33%;
     }
 
     .version {
@@ -17,20 +20,24 @@
     .lks {
         text-align: right;
     }
+
+    .github {
+        color: black;
+    }
 </style>
 
-<footer class="d-flex justify-content-between fixed-bottom px-2">
+<footer>
     <div class="copyright">
         <p>
             Copyright &copy; 2022 Materdei School. All Rights Reserved
         </p>
     </div>
-    <div class="version text-muted">
+    <div class="version">
         <p>MD Queues 1.0.0-alpha</p>
     </div>
 
     <div class="lks">
-        <a href="https://github.com/3xbun/silent-pickup" target="_blank" class="btn"><i class="fab fa-github"></i>
+        <a href="https://github.com/3xbun/silent-pickup" target="_blank" class="github"><i class="fab fa-github"></i>
             View on Github</a>
     </div>
 </footer>
