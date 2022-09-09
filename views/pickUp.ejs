@@ -165,8 +165,6 @@
                             reset()
 
                             if (id) {
-
-
                                 try {
                                     const res = await axios.get(`${baseURL}/db/Students/${id}`)
                                     searchStudent.value = res.data
@@ -208,7 +206,7 @@
                         }
 
                         const timeFormat = () => {
-                            if (queue.value.datetime) {
+                            if (queue.value) {
                                 timeFromNow.value = dayjs(queue.value.datetime).fromNow();
 
                                 setInterval(() => {
