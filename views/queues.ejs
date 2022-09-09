@@ -8,6 +8,8 @@
                 width: 100vw;
                 font-size: 2em;
                 padding: 0 1em;
+                max-width: 1000px;
+                margin: auto;
             }
 
             .fa-xmark {
@@ -46,10 +48,10 @@
         <table>
             <thead>
                 <tr>
-                    <th style="width: 5%;">ลำดับ</th>
+                    <th style="width: 10%;">ลำดับ</th>
                     <th style="width: 10%;">เวลา</th>
-                    <th style="width: 15%;">รหัสนักเรียน</th>
-                    <th>ชื่อ-นามสกุล</th>
+                    <th style="width: 25%;">รหัสนักเรียน</th>
+                    <th style="text-align: left;">ชื่อ-นามสกุล</th>
                     <th>ชั้น</th>
                     <th>โดย</th>
                 </tr>
@@ -57,7 +59,7 @@
             <tbody>
                 <tr v-for="(queue, index) in data" :key="queue.time">
                     <td class="text-center">{{index+1}}</td>
-                    <td>{{formatTime(queue.time)}}</td>
+                    <td>{{formatTime(queue.datetime)}}</td>
                     <td>{{queue.id}}</td>
                     <td style="text-align: left;">{{queue.name}}</td>
                     <td>{{queue.class}}</td>
