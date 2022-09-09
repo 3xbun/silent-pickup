@@ -5,7 +5,9 @@
     <%- include("./partials/head"); %>
         <style>
             table {
+                width: 100vw;
                 font-size: 2em;
+                padding: 0 1em;
             }
 
             .fa-xmark {
@@ -15,39 +17,65 @@
             a {
                 cursor: pointer;
             }
+
+            td {
+                text-align: center;
+            }
+
+            .danger {
+                color: red;
+                text-align: center;
+            }
+
+            @media only screen and (max-width: 600px) {
+                h1 {
+                    font-size: 2em;
+                }
+
+                .container {
+                    padding: 1em;
+                }
+
+                table {
+                    font-size: 1em;
+                }
+            }
         </style>
 </head>
 
 <body>
     <div id="app">
-        <h1 class="text-center">MD Queue</h1>
         <div class="container">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th class="text-center">NO.</th>
-                            <th>Time</th>
-                            <th>Student ID</th>
-                            <th>Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(queue, index) in data" :key="queue.time">
-                            <td class="text-center">{{index+1}}</td>
-                            <td>{{formatTime(queue.time)}}</td>
-                            <td>{{queue.id}}</td>
-                            <td>{{queue.name}}</td>
-                            <td>
-                                <a @click="deleteQueue(queue.id)">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <h1>MD QUEUES</h1>
+            <a @click="deleteAllQueue()" class="danger">Delete All Queue</a>
         </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 5%;">ลำดับ</th>
+                    <th style="width: 10%;">เวลา</th>
+                    <th style="width: 15%;">รหัสนักเรียน</th>
+                    <th>ชื่อ-นามสกุล</th>
+                    <th>ชั้น</th>
+                    <th>โดย</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(queue, index) in data" :key="queue.time">
+                    <td class="text-center">{{index+1}}</td>
+                    <td>{{formatTime(queue.time)}}</td>
+                    <td>{{queue.id}}</td>
+                    <td style="text-align: left;">{{queue.name}}</td>
+                    <td>{{queue.class}}</td>
+                    <td style="font-family: FontAwesome;">{{formatPickup[queue.pickupType]}}</td>
+                    <td>
+                        <a @click="deleteQueue(queue.id)">
+                            <i class="fa-solid fa-xmark"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <%- include("./partials/footer"); %>
@@ -64,12 +92,21 @@
                             setInterval(async () => {
                                 const res = await axios.get(`${baseURL}/api`)
                                 data.value = res.data
+                                console.log(res.data)
                             }, 1000)
                         };
 
+                        const formatPickup = ref({
+                            'walk': "",
+                            'car': ""
+                        })
+
                         const deleteQueue = (id) => {
                             axios.delete(`${baseURL}/api/delete/${id}`)
-                            getQueues()
+                        }
+
+                        const deleteAllQueue = () => {
+                            axios.delete(`${baseURL}/api/delete`)
                         }
 
                         const formatTime = (time) => dayjs(time).format('HH:mm:ss')
@@ -80,8 +117,10 @@
 
                         return {
                             data,
+                            formatPickup,
                             formatTime,
-                            deleteQueue
+                            deleteQueue,
+                            deleteAllQueue
                         }
                     }
                 }).mount('#app')
