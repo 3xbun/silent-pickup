@@ -1,5 +1,4 @@
 const express = require("express");
-const dayjs = require("dayjs");
 const { Queues } = require("../database/db");
 
 const router = express.Router();
@@ -9,6 +8,19 @@ router.get("/", async (req, res) => {
   const queues = await Queues.find();
   res.json(queues);
 });
+
+// Get queue by classroom
+router.get("/class/:class", async (req, res) => {
+  const prefix = {
+    "k": "อ",
+    "p": "ป"
+  }
+
+  const cls = (req.params.class).split("");
+
+  const queues = await Queues.find({ class: { $regex: `^${prefix[cls[0]]}.${cls[1]}` } })
+  res.status(201).json(queues)
+})
 
 // Get queue by ID
 router.get("/:id", async (req, res) => {
