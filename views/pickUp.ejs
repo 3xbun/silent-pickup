@@ -29,8 +29,6 @@
             .alert {
                 margin-top: 1em;
                 padding: .5em 1em;
-                color: #ff4858;
-                background-color: #ffe0e3;
                 width: fit-content;
                 border-radius: 1em;
                 display: flex;
@@ -39,6 +37,16 @@
 
             .alert span {
                 margin-left: .2em;
+            }
+
+            .alert-success {
+                color: green;
+                border: 1px solid green;
+            }
+
+            .alert-error {
+                color: #ff4858;
+                background-color: #ffe0e3;
             }
 
             .card {
@@ -99,7 +107,7 @@
                 <button type="submit" class="btn">Search</button>
             </form>
 
-            <div v-if="errMsg" class="alert">
+            <div v-if="errMsg" class="alert alert-error">
                 <i class="fa-solid fa-circle-exclamation"></i>
                 <span>{{errMsg}}</span>
             </div>
@@ -135,7 +143,7 @@
                 <span>
                     <strong>Well done!</strong> Add Queue Successfully
                 </span>
-                <div class="close" @click="reset()">
+                <div class="close" @click="showModal=false">
                     <i class="fa-solid fa-xmark"></i>
                 </div>
             </div>
@@ -154,7 +162,7 @@
                     setup() {
                         const searchStudent = ref({})
                         const stdID = ref("")
-                        const alertText = ""
+                        const alertText = "asd"
                         const showModal = ref(false)
                         const queue = ref("")
                         const timeFromNow = ref("")
@@ -188,14 +196,19 @@
 
                         const addQueue = (std) => {
                             std.pickupType = pickupType.value
-                            console.log(std)
-                            axios.post(`${baseURL}/api/add/queue`, std)
-                            getQueue(std.id)
+                            axios.post(`${baseURL}/api/add/queue`, std).then(res => {
+                                console.log(res)
+                                showModal.value = true
+                                getQueue(std.id)
+                            }).catch(err => console.log(err))
                         }
 
                         const deleteQueue = (id) => {
-                            axios.delete(`${baseURL}/api/delete/${id}`)
-                            getQueue(id)
+                            axios.delete(`${baseURL}/api/delete/${id}`).then(res => {
+                                console.log(res)
+                                getQueue(id)
+                                reset()
+                            }).catch(err => console.log(err))
                         }
 
                         const reset = () => {
