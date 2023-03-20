@@ -10,6 +10,23 @@
                 padding: 0 1em;
                 max-width: 1000px;
                 margin: auto;
+                border-collapse: separate;
+                border-spacing: 0 .5em;
+            }
+
+            tbody tr {
+                border-radius: 10px 0 0 10px;
+                /* background-color: red; */
+                /* border: 1px solid black; */
+                box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            }
+
+            td:first-child {
+                border-radius: 10px 0 0 10px;
+            }
+
+            td:last-child {
+                border-radius: 0 10px 10px 0;
             }
 
             .fa-xmark {
@@ -25,16 +42,18 @@
             }
 
             @media only screen and (max-width: 600px) {
+
                 h1 {
-                    font-size: 2em;
+                    font-size: 1em;
                 }
 
                 .container {
                     padding: 1em;
                 }
 
-                table {
-                    font-size: 1em;
+                table,
+                footer {
+                    font-size: .7em;
                 }
             }
         </style>
